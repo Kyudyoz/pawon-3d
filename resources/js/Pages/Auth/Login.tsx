@@ -31,6 +31,11 @@ export default function Login() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
+              {(errors.username || errors.password) && (
+                <div className="mt-1 text-sm text-red-600 text-center">
+                  Login gagal, cek kembali username dan password!
+                </div>
+              )}
               <div>
                 <Label htmlFor="username" className="block mb-1">
                   Username
@@ -45,11 +50,6 @@ export default function Login() {
                   required
                   className="w-full"
                 />
-                {errors.username && (
-                  <div className="mt-1 text-sm text-red-600">
-                    {errors.username}
-                  </div>
-                )}
               </div>
 
               <div>
@@ -66,11 +66,6 @@ export default function Login() {
                   required
                   className="w-full"
                 />
-                {errors.password && (
-                  <div className="mt-1 text-sm text-red-600">
-                    {errors.password}
-                  </div>
-                )}
               </div>
 
               <div className="flex items-center justify-between">

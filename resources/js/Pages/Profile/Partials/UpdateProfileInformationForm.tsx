@@ -59,7 +59,7 @@ export default function UpdateProfileInformation({
 
           <TextInput
             id="username"
-            type="username"
+            type="text"
             className="mt-1 block w-full"
             value={data.username}
             onChange={(e) => setData("username", e.target.value)}

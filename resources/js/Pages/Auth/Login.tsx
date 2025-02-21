@@ -1,23 +1,22 @@
-import { Button } from '@/Components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/Components/ui/card';
-import { Input } from '@/Components/ui/input';
-import { Label } from '@/Components/ui/label';
+import { Button } from "@/Components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/Components/ui/label";
 
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from "@inertiajs/react";
 
-import React from 'react';
-
+import React from "react";
 
 export default function Login() {
   const { data, setData, post, processing, errors } = useForm({
-    email: '',
-    password: '',
+    username: "",
+    password: "",
     remember: false as boolean,
   });
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    post(route('login'));
+    post(route("login"));
   }
 
   return (
@@ -33,21 +32,23 @@ export default function Login() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <Label htmlFor="email" className="block mb-1">
-                  Email
+                <Label htmlFor="username" className="block mb-1">
+                  Username
                 </Label>
                 <Input
-                  id="email"
-                  type="email"
-                  name="email"
-                  value={data.email}
-                  onChange={e => setData('email', e.target.value)}
-                  placeholder="you@example.com"
+                  id="username"
+                  type="text"
+                  name="username"
+                  value={data.username}
+                  onChange={(e) => setData("username", e.target.value)}
+                  placeholder="Masukkan username"
                   required
                   className="w-full"
                 />
-                {errors.email && (
-                  <div className="mt-1 text-sm text-red-600">{errors.email}</div>
+                {errors.username && (
+                  <div className="mt-1 text-sm text-red-600">
+                    {errors.username}
+                  </div>
                 )}
               </div>
 
@@ -60,13 +61,15 @@ export default function Login() {
                   type="password"
                   name="password"
                   value={data.password}
-                  onChange={e => setData('password', e.target.value)}
+                  onChange={(e) => setData("password", e.target.value)}
                   placeholder="Masukkan password"
                   required
                   className="w-full"
                 />
                 {errors.password && (
-                  <div className="mt-1 text-sm text-red-600">{errors.password}</div>
+                  <div className="mt-1 text-sm text-red-600">
+                    {errors.password}
+                  </div>
                 )}
               </div>
 
@@ -77,16 +80,16 @@ export default function Login() {
                     type="checkbox"
                     name="remember"
                     checked={data.remember}
-                    onChange={e => setData('remember', e.target.checked)}
+                    onChange={(e) => setData("remember", e.target.checked)}
                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                   />
-                  <label htmlFor="remember_me" className="ml-2 text-sm text-gray-700">
+                  <label
+                    htmlFor="remember_me"
+                    className="ml-2 text-sm text-gray-700"
+                  >
                     Ingat saya
                   </label>
                 </div>
-                <Link href={route('password.request')} className="text-sm text-indigo-600 hover:underline">
-                  Lupa Password?
-                </Link>
               </div>
 
               <div>

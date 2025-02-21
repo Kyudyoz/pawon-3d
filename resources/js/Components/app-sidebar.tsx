@@ -1,6 +1,17 @@
 import * as React from "react";
 import { Link, usePage } from "@inertiajs/react";
-import { ChevronRight, Microwave, PackageOpen } from "lucide-react";
+import {
+  Cake,
+  CakeSlice,
+  CalculatorIcon,
+  ChevronRight,
+  ClipboardCheck,
+  LayoutDashboard,
+  MessageCircleReply,
+  Microwave,
+  PackageOpen,
+  Users,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -28,9 +39,9 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   currentUrl = window.location.pathname;
 
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader className="flex items-center justify-center text-lg font-bold mt-4">
-        Pawon3D
+        <span>Pawon 3D</span>
       </SidebarHeader>
       <SidebarContent>
         <ScrollArea>
@@ -40,21 +51,35 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               {/* Dashboard */}
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  asChild
                   className={
                     currentUrl === "/dashboard"
                       ? "bg-gray-700 text-white"
                       : "text-gray-700"
                   }
                 >
+                  <LayoutDashboard />
                   <Link href="/dashboard">Dashboard</Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
+              {/* Akun */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={
+                    currentUrl === "/pengguna"
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-700"
+                  }
+                >
+                  <Users />
+                  <Link href="/pengguna">Pengguna</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               {/* Inventori */}
               <Collapsible
                 asChild
-                defaultOpen={currentUrl == "/profile" ? true : false}
+                defaultOpen={currentUrl.includes("/inventori") ? true : false}
                 className="group/collapsible"
               >
                 <SidebarMenuItem>
@@ -85,12 +110,14 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                         <SidebarMenuSubButton
                           asChild
                           className={
-                            currentUrl === "/profile"
+                            currentUrl === "/inventori/olahan-bahan-baku"
                               ? "bg-gray-700 text-white"
                               : "text-gray-700"
                           }
                         >
-                          <Link href="/profile">Olahan Bahan Baku</Link>
+                          <Link href="/inventori/olahan-bahan-baku">
+                            Olahan Bahan Baku
+                          </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     </SidebarMenuSub>
@@ -163,16 +190,30 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenuItem>
               </Collapsible>
 
+              {/* Produk */}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={
+                    currentUrl === "/produk"
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-700"
+                  }
+                >
+                  <CakeSlice />
+                  <Link href="/produk">Produk</Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+
               {/* POS */}
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  asChild
                   className={
                     currentUrl === "/pos"
                       ? "bg-gray-700 text-white"
                       : "text-gray-700"
                   }
                 >
+                  <CalculatorIcon />
                   <Link href="/pos">POS</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -180,13 +221,13 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               {/* Transaksi */}
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  asChild
                   className={
                     currentUrl === "/transaksi"
                       ? "bg-gray-700 text-white"
                       : "text-gray-700"
                   }
                 >
+                  <ClipboardCheck />
                   <Link href="/transaksi">Transaksi</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -194,13 +235,13 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               {/* Ulasan */}
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  asChild
                   className={
                     currentUrl === "/ulasan"
                       ? "bg-gray-700 text-white"
                       : "text-gray-700"
                   }
                 >
+                  <MessageCircleReply />
                   <Link href="/ulasan">Ulasan</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

@@ -13,7 +13,6 @@ import {
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { Activity, CreditCard, DollarSign, Filter, Users } from "lucide-react";
-import { title } from "process";
 
 const summaryData = [
   { title: "Total Revenue", value: "$ 1,200.00", icon: DollarSign },
@@ -30,7 +29,7 @@ export default function Dashboard() {
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <div className="flex gap-2 items-center">
           <DatePicker />
-          <Button asChild>
+          <Button variant="secondary">
             <Filter className="w-4 h-4 mr-1" /> Filter
           </Button>
         </div>

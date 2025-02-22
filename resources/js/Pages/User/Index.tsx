@@ -55,8 +55,7 @@ function Index() {
   const [openAdd, setOpenAdd] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [editData, setEditData] = useState<User | null>(null);
-  const { users } = usePage<PageProps>().props;
-  const { flash } = usePage<PageProps>().props;
+  const { users, flash, auth } = usePage<PageProps>().props;
 
   const {
     data,
@@ -207,13 +206,15 @@ function Index() {
                           >
                             <FilePen /> Edit
                           </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleDelete(user.id)}
-                          >
-                            <Trash2 /> Hapus
-                          </Button>
+                          {user.id === auth.user.id ? null : (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleDelete(user.id)}
+                            >
+                              <Trash2 /> Hapus
+                            </Button>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))}

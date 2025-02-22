@@ -82,7 +82,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                 className="group/collapsible"
               >
                 <SidebarMenuItem>
-                  <CollapsibleTrigger>
+                  <CollapsibleTrigger asChild>
                     <SidebarMenuButton tooltip="Inventori">
                       <PackageOpen />
                       <span>Inventori</span>
@@ -95,6 +95,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                     <SidebarMenuSub>
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton
+                          asChild
                           className={
                             currentUrl === "/inventori/bahan-baku"
                               ? "bg-gray-700 text-white"
@@ -106,6 +107,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton
+                          asChild
                           className={
                             currentUrl === "/inventori/olahan-bahan-baku"
                               ? "bg-gray-700 text-white"
@@ -123,9 +125,12 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               </Collapsible>
 
               {/* Produksi */}
-              <Collapsible defaultOpen={false} className="group/collapsible">
+              <Collapsible
+                defaultOpen={currentUrl.includes("/produksi")}
+                className="group/collapsible"
+              >
                 <SidebarMenuItem>
-                  <CollapsibleTrigger>
+                  <CollapsibleTrigger asChild>
                     <SidebarMenuButton tooltip="Produksi">
                       <Microwave />
                       <span>Produksi</span>
@@ -138,40 +143,29 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                     <SidebarMenuSub>
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton
+                          asChild
                           className={
-                            currentUrl === "/inventori/bahan-baku"
+                            currentUrl === "/produksi/rencana-produksi"
                               ? "bg-gray-700 text-white"
                               : "text-gray-700"
                           }
                         >
-                          <Link href="/inventori/bahan-baku">
+                          <Link href="/produksi/rencana-produksi">
                             Rencana Produksi
                           </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton
+                          asChild
                           className={
-                            currentUrl === "/inventori/olahan-bahan-baku"
+                            currentUrl === "/produksi/daftar-produksi"
                               ? "bg-gray-700 text-white"
                               : "text-gray-700"
                           }
                         >
-                          <Link href="/inventori/olahan-bahan-baku">
+                          <Link href="/produksi/daftar-produksi">
                             Daftar Produksi
-                          </Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton
-                          className={
-                            currentUrl === "/inventori/olahan-bahan-baku"
-                              ? "bg-gray-700 text-white"
-                              : "text-gray-700"
-                          }
-                        >
-                          <Link href="/inventori/olahan-bahan-baku">
-                            Riwayat Produksi
                           </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>

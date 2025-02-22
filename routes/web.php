@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -29,6 +30,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/user', [UserController::class, 'store'])->name('user.store');
     Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
     Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+
+    Route::get('/inventori/bahan-baku', [MaterialController::class, 'index'])->name('material.index');
+    Route::post('/inventori/bahan-baku', [MaterialController::class, 'store'])->name('material.store');
+    Route::put('/inventori/bahan-baku/{material}', [MaterialController::class, 'update'])->name('material.update');
+    Route::delete('/inventori/bahan-baku/{material}', [MaterialController::class, 'destroy'])->name('material.destroy');
 
     Route::get('/produk', [ProductController::class, 'index'])->name('product.index');
 });

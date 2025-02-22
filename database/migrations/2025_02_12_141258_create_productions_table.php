@@ -19,8 +19,8 @@ return new class extends Migration
             $table->decimal('count', 3, 0);
             $table->string('status', 20);
             $table->time('time');
-            $table->decimal('material_quantity', 10, 2);
-            $table->decimal('processed_material_quantity', 10, 2);
+            $table->decimal('material_quantity', 10, 0);
+            $table->decimal('processed_material_quantity', 10, 0);
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

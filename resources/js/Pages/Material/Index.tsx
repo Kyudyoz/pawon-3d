@@ -21,26 +21,20 @@ import {
   TableRow,
 } from "@/Components/ui/table";
 import { ScrollArea } from "@/Components/ui/scroll-area";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/Components/ui/select";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { UserTable } from "./UserTable";
+import { User } from "@/types";
+import { MaterialTable } from "./MaterialTable";
 
-type User = {
+type Material = {
   id: string;
   name: string;
-  username: string;
-  role: string;
+  quantity: number;
+  unit: string;
 };
 
 type PageProps = {
-  users: User[];
+  materials: Material[];
   auth: {
     user: User;
   };
@@ -53,8 +47,8 @@ type PageProps = {
 function Index() {
   const [openAdd, setOpenAdd] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const [editData, setEditData] = useState<User | null>(null);
-  const { users, flash, auth } = usePage<PageProps>().props;
+  const [editData, setEditData] = useState<Material | null>(null);
+  const { materials, flash, auth } = usePage<PageProps>().props;
 
   const {
     data,
@@ -68,9 +62,8 @@ function Index() {
     clearErrors,
   } = useForm({
     name: "",
-    username: "",
-    password: "",
-    role: "",
+    quantity: 0,
+    unit: "",
   });
 
   useEffect(() => {
@@ -108,7 +101,7 @@ function Index() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    post("/user", {
+    post("/inventori/bahan-baku", {
       onSuccess: () => {
         setOpenAdd(false);
         reset();
@@ -119,7 +112,7 @@ function Index() {
   const handleEditSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (editData) {
-      put(`/user/${editData.id}`, {
+      put(`/inventori/bahan-baku/${editData.id}`, {
         onSuccess: () => {
           setOpenEdit(false);
           reset();
@@ -133,21 +126,20 @@ function Index() {
     reset();
   };
 
-  const handleEdit = (user: User) => {
-    setEditData(user);
+  const handleEdit = (material: Material) => {
+    setEditData(material);
     setData({
-      name: user.name,
-      username: user.username,
-      password: "",
-      role: user.role,
+      name: material.name,
+      quantity: material.quantity,
+      unit: material.unit,
     });
     setOpenEdit(true);
   };
 
   const handleDelete = (id: string) => {
     Swal.fire({
-      title: "Hapus Pengguna?",
-      text: "Data pengguna ini akan dihapus secara permanen!",
+      title: "Hapus Bahan Baku?",
+      text: "Data bahan baku ini akan dihapus secara permanen!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -156,9 +148,9 @@ function Index() {
       cancelButtonText: "Batal",
     }).then((result) => {
       if (result.isConfirmed) {
-        destroy(`/user/${id}`, {
+        destroy(`/inventori/bahan-baku/${id}`, {
           onSuccess: () =>
-            Swal.fire("Dihapus!", "Data pengguna telah dihapus.", "success"),
+            Swal.fire("Dihapus!", "Data bahan baku telah dihapus.", "success"),
         });
       }
     });
@@ -166,21 +158,58 @@ function Index() {
 
   return (
     <AuthenticatedLayout>
-      <Head title="Pengguna" />
+      <Head title="Bahan Baku" />
       <div className="flex items-end justify-between mb-7">
-        <h1 className="text-3xl font-bold">Pengguna</h1>
+        <h1 className="text-3xl font-bold">Bahan Baku</h1>
         <div className="flex gap-2 items-center">
           <Button variant="outline" onClick={handleAdd}>
-            <Plus /> Tambah Pengguna
+            <Plus /> Tambah Bahan Baku
           </Button>
         </div>
       </div>
-      <ScrollArea className="whitespace-nowrap rounded-md border">
+      <ScrollArea className="whitespace-nowrap rounded border">
         <Card>
           <CardHeader>
             <CardContent className="p-0 px-6">
-              <UserTable
-                users={users}
+              {/* <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Nama</TableHead>
+                      <TableHead>Quantity</TableHead>
+                      <TableHead>Unit</TableHead>
+                      <TableHead className="text-right">Aksi</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {materials.map((material) => (
+                      <TableRow key={material.id}>
+                        <TableCell>{material.name}</TableCell>
+                        <TableCell>{material.quantity}</TableCell>
+                        <TableCell>{material.unit}</TableCell>
+                        <TableCell className="flex justify-end gap-4">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleEdit(material)}
+                          >
+                            <FilePen /> Edit
+                          </Button>
+
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleDelete(material.id)}
+                          >
+                            <Trash2 /> Hapus
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table> */}
+
+              <MaterialTable
+                materials={materials}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
               />
@@ -189,73 +218,53 @@ function Index() {
         </Card>
       </ScrollArea>
 
-      {/* Dialog Tambah Pengguna */}
+      {/* Dialog Tambah Bahan Baku */}
       <Dialog open={openAdd} onOpenChange={setOpenAdd}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Tambah Pengguna</DialogTitle>
+            <DialogTitle>Tambah Bahan Baku</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Input Nama */}
+            {/* Input Nama bahan baku */}
             <div>
-              <Label htmlFor="name">Nama</Label>
+              <Label htmlFor="name">Nama Bahan Baku</Label>
               <Input
                 id="name"
                 value={data.name}
                 onChange={(e) => setData("name", e.target.value)}
-                placeholder="Masukkan nama"
+                placeholder="Masukkan nama bahan baku"
               />
               {errors.name && (
                 <p className="text-red-500 text-sm">{errors.name}</p>
               )}
             </div>
 
-            {/* Input Username */}
+            {/* Input quantity */}
             <div>
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="quantity">Jumlah Bahan Baku</Label>
               <Input
-                id="username"
-                value={data.username}
-                onChange={(e) => setData("username", e.target.value)}
-                placeholder="Masukkan username"
+                id="quantity"
+                value={data.quantity}
+                onChange={(e) => setData("quantity", Number(e.target.value))}
+                placeholder="Masukkan jumlah bahan baku"
               />
-              {errors.username && (
-                <p className="text-red-500 text-sm">{errors.username}</p>
+              {errors.quantity && (
+                <p className="text-red-500 text-sm">{errors.quantity}</p>
               )}
             </div>
 
-            {/* Input Password */}
+            {/* Input Unit */}
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="unit">Satuan</Label>
               <Input
-                id="password"
-                type="password"
-                value={data.password}
-                onChange={(e) => setData("password", e.target.value)}
-                placeholder="Masukkan password"
+                id="unit"
+                type="text"
+                value={data.unit}
+                onChange={(e) => setData("unit", e.target.value)}
+                placeholder="Masukkan satuan"
               />
-              {errors.password && (
-                <p className="text-red-500 text-sm">{errors.password}</p>
-              )}
-            </div>
-
-            {/* Pilihan Role */}
-            <div>
-              <Label htmlFor="role">Role</Label>
-              <Select
-                onValueChange={(value) => setData("role", value)}
-                value={data.role}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Pilih role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="produksi">Produksi</SelectItem>
-                  <SelectItem value="kasir">Kasir</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.role && (
-                <p className="text-red-500 text-sm">{errors.role}</p>
+              {errors.unit && (
+                <p className="text-red-500 text-sm">{errors.unit}</p>
               )}
             </div>
 
@@ -269,15 +278,15 @@ function Index() {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog Edit Pengguna */}
+      {/* Dialog Edit Bahan Baku */}
       <Dialog open={openEdit} onOpenChange={setOpenEdit}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Edit Pengguna</DialogTitle>
+            <DialogTitle>Edit Bahan Baku</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleEditSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="name">Nama</Label>
+              <Label htmlFor="name">Nama Bahan Baku</Label>
               <Input
                 id="name"
                 value={data.name}
@@ -288,49 +297,25 @@ function Index() {
               )}
             </div>
             <div>
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="quantity">Jumlah Bahan Baku</Label>
               <Input
-                id="username"
-                value={data.username}
-                onChange={(e) => setData("username", e.target.value)}
+                id="quantity"
+                value={data.quantity}
+                onChange={(e) => setData("quantity", Number(e.target.value))}
               />
-              {errors.username && (
-                <p className="text-red-500 text-sm">{errors.username}</p>
+              {errors.quantity && (
+                <p className="text-red-500 text-sm">{errors.quantity}</p>
               )}
             </div>
             <div>
-              <Label htmlFor="password">Password (opsional)</Label>
+              <Label htmlFor="unit">Satuan</Label>
               <Input
-                id="password"
-                type="password"
-                value={data.password}
-                onChange={(e) => setData("password", e.target.value)}
+                id="unit"
+                value={data.unit}
+                onChange={(e) => setData("unit", e.target.value)}
               />
-              {errors.password && (
-                <p className="text-red-500 text-sm">{errors.password}</p>
-              )}
-            </div>
-            <div>
-              <Label htmlFor="role">Role</Label>
-              <Select
-                onValueChange={(value) => setData("role", value)}
-                value={data.role}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Pilih role" />
-                </SelectTrigger>
-                <SelectContent>
-                  {data.role === "pemilik" && (
-                    <>
-                      <SelectItem value="pemilik">Pemilik</SelectItem>
-                    </>
-                  )}
-                  <SelectItem value="produksi">Produksi</SelectItem>
-                  <SelectItem value="kasir">Kasir</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.role && (
-                <p className="text-red-500 text-sm">{errors.role}</p>
+              {errors.unit && (
+                <p className="text-red-500 text-sm">{errors.unit}</p>
               )}
             </div>
             <DialogFooter>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('processed_material_id');
             $table->uuid('material_id');
-            $table->decimal('material_quantity', 10, 2);
+            $table->decimal('material_quantity', 10, 0);
             $table->timestamps();
 
             $table->foreign('processed_material_id')

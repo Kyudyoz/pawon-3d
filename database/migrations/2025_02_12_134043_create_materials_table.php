@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('materials', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name', 50);
-            $table->decimal('quantity', 10, 2);
+            $table->decimal('quantity', 10, 0);
             $table->string('unit', 50);
             $table->timestamps();
         });

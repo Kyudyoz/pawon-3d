@@ -175,7 +175,7 @@ function Index() {
           </Button>
         </div>
       </div>
-      <ScrollArea className="whitespace-nowrap rounded-md border">
+      <ScrollArea className="whitespace-nowrap rounded-xl border">
         <Card>
           <CardHeader>
             <CardContent className="p-0 px-6">

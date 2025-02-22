@@ -66,24 +66,23 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   className={
-                    currentUrl === "/pengguna"
+                    currentUrl === "/user"
                       ? "bg-gray-700 text-white"
                       : "text-gray-700"
                   }
                 >
                   <Users />
-                  <Link href="/pengguna">Pengguna</Link>
+                  <Link href="/user">Pengguna</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
               {/* Inventori */}
               <Collapsible
-                asChild
                 defaultOpen={currentUrl.includes("/inventori") ? true : false}
                 className="group/collapsible"
               >
                 <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
+                  <CollapsibleTrigger>
                     <SidebarMenuButton tooltip="Inventori">
                       <PackageOpen />
                       <span>Inventori</span>
@@ -96,7 +95,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                     <SidebarMenuSub>
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton
-                          asChild
                           className={
                             currentUrl === "/inventori/bahan-baku"
                               ? "bg-gray-700 text-white"
@@ -108,7 +106,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton
-                          asChild
                           className={
                             currentUrl === "/inventori/olahan-bahan-baku"
                               ? "bg-gray-700 text-white"
@@ -126,13 +123,9 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               </Collapsible>
 
               {/* Produksi */}
-              <Collapsible
-                asChild
-                defaultOpen={false}
-                className="group/collapsible"
-              >
+              <Collapsible defaultOpen={false} className="group/collapsible">
                 <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
+                  <CollapsibleTrigger>
                     <SidebarMenuButton tooltip="Produksi">
                       <Microwave />
                       <span>Produksi</span>
@@ -145,7 +138,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                     <SidebarMenuSub>
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton
-                          asChild
                           className={
                             currentUrl === "/inventori/bahan-baku"
                               ? "bg-gray-700 text-white"
@@ -159,7 +151,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton
-                          asChild
                           className={
                             currentUrl === "/inventori/olahan-bahan-baku"
                               ? "bg-gray-700 text-white"
@@ -173,7 +164,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                       </SidebarMenuSubItem>
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton
-                          asChild
                           className={
                             currentUrl === "/inventori/olahan-bahan-baku"
                               ? "bg-gray-700 text-white"

@@ -76,14 +76,7 @@ type PageProps = {
 };
 
 function Index() {
-  const { products: initialProducts } = usePage<PageProps>().props;
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setProducts(initialProducts);
-    setLoading(false);
-  }, [initialProducts]);
+  const { products } = usePage<PageProps>().props;
 
   return (
     <AuthenticatedLayout>
@@ -102,9 +95,7 @@ function Index() {
             <CardHeader>
               <CardTitle>Produk</CardTitle>
               <CardContent>
-                {loading ? (
-                  <p>Memuat data...</p>
-                ) : products.length === 0 ? (
+                {products.length === 0 ? (
                   <Table>
                     <TableCaption>A list of your recent invoices.</TableCaption>
                     <TableHeader>

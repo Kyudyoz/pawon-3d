@@ -1,13 +1,12 @@
 import {
   BadgeCheck,
   Bell,
+  BellDot,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
-  Sparkles,
 } from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/Components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,7 +37,49 @@ export function NavUser({ user, btnClassName, isNavbar }: Props) {
 
   return (
     <SidebarMenu>
-      <SidebarMenuItem>
+      <SidebarMenuItem className="flex items-center gap-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <SidebarMenuButton
+              size="sm"
+              className={cn(
+                "data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground",
+                btnClassName
+              )}
+            >
+              <div className="relative">
+                <Bell className="size-4" />
+                <div>
+                  <span className="absolute top-0 right-0 inline-flex h-2 w-2 translate-x-1/2 -translate-y-1/2 transform rounded-full bg-red-500">
+                    <span className="sr-only">New Notifications</span>
+                  </span>
+                </div>
+              </div>
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+            side={isMobile || isNavbar ? "bottom" : "right"}
+            align="end"
+            sideOffset={2}
+          >
+            <DropdownMenuLabel className="p-0 font-normal">
+              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                <Bell className="size-4" />
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">Notifications</span>
+                  <span className="truncate text-xs">
+                    You have 3 unread messages
+                  </span>
+                </div>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem>View all</DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
@@ -49,8 +90,9 @@ export function NavUser({ user, btnClassName, isNavbar }: Props) {
               )}
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {user.name[0]}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{user.name}</span>
@@ -70,8 +112,9 @@ export function NavUser({ user, btnClassName, isNavbar }: Props) {
                 <DropdownMenuLabel className="p-0 font-normal">
                   <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                     <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarImage src={user.avatar} alt={user.name} />
-                      <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                      <AvatarFallback className="rounded-lg">
+                        {user.name[0]}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-semibold">
@@ -84,21 +127,11 @@ export function NavUser({ user, btnClassName, isNavbar }: Props) {
                 <DropdownMenuSeparator />
               </>
             )}
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Sparkles />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <BadgeCheck />
                 <Link href={route("profile.edit")}>Profil</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

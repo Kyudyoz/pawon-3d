@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('processed_material_id');
             $table->uuid('material_id');
             $table->decimal('material_quantity', 10, 0);
+            $table->string('material_unit', 50);
             $table->timestamps();
 
             $table->foreign('processed_material_id')

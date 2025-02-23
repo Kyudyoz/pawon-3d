@@ -49,11 +49,11 @@ export function MaterialTable({
     },
     {
       accessorKey: "quantity",
-      header: "Quantity",
+      header: "Jumlah",
     },
     {
       accessorKey: "unit",
-      header: "Unit",
+      header: "Satuan",
     },
     {
       id: "actions",

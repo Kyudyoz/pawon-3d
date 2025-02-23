@@ -16,6 +16,11 @@ class Material extends Model
     ];
     protected $fillable = ['name', 'quantity', 'unit'];
 
+    public function processed_material_details()
+    {
+        return $this->hasMany(ProcessedMaterialDetail::class);
+    }
+
     public static function boot()
     {
         parent::boot();

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\ProcessedMaterialController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -35,6 +36,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/inventori/bahan-baku', [MaterialController::class, 'store'])->name('material.store');
     Route::put('/inventori/bahan-baku/{material}', [MaterialController::class, 'update'])->name('material.update');
     Route::delete('/inventori/bahan-baku/{material}', [MaterialController::class, 'destroy'])->name('material.destroy');
+
+    Route::get('/inventori/olahan-bahan-baku', [ProcessedMaterialController::class, 'index'])->name('processed-material.index');
+    Route::post('/inventori/olahan-bahan-baku', [ProcessedMaterialController::class, 'store'])->name('processed-material.store');
+    Route::put('/inventori/olahan-bahan-baku/{processedMaterial}', [ProcessedMaterialController::class, 'update'])->name('processed-material.update');
+    Route::delete('/inventori/olahan-bahan-baku/{processedMaterial}', [ProcessedMaterialController::class, 'destroy'])->name('processed-material.destroy');
 
     Route::get('/produk', [ProductController::class, 'index'])->name('product.index');
 });

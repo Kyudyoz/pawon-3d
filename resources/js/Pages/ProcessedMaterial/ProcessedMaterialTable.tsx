@@ -18,58 +18,84 @@ import {
 } from "@/Components/ui/table";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
-import { FilePen, Trash2 } from "lucide-react";
+import { Croissant, FilePen, Trash2 } from "lucide-react";
 
-type User = {
+type ProcessedMaterial = {
   id: string;
   name: string;
-  username: string;
-  role: string;
+  quantity: number;
+  processed_material_details: {
+    material_id: string;
+    material_quantity: number;
+    material_unit: string;
+  }[];
 };
 
-type UserTableProps = {
-  users: User[];
-  onEdit: (user: User) => void;
+type ProcessedMaterialTableProps = {
+  processedMaterials: ProcessedMaterial[];
+  onEdit: (processedMaterial: ProcessedMaterial) => void;
+  onShow: (processedMaterial: ProcessedMaterial) => void;
   onDelete: (id: string) => void;
 };
 
-export function UserTable({ users, onEdit, onDelete }: UserTableProps) {
+export function ProcessedMaterialTable({
+  processedMaterials,
+  onEdit,
+  onShow,
+  onDelete,
+}: ProcessedMaterialTableProps) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
 
-  const columns: ColumnDef<User>[] = [
+  const columns: ColumnDef<ProcessedMaterial>[] = [
     {
       accessorKey: "name",
-      header: "Nama",
+      header: "NamaOlahan",
     },
     {
-      accessorKey: "username",
-      header: "Username",
+      accessorKey: "quantity",
+      header: "Jumlah",
     },
     {
-      accessorKey: "role",
-      header: "Role",
+      id: "details",
+      header: "Bahan Baku",
+      cell: ({ row }) => {
+        const processedMaterial = row.original;
+        return (
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onShow(processedMaterial)}
+            >
+              <Croissant className="w-4 h-4" /> Lihat Detail
+            </Button>
+          </div>
+        );
+      },
     },
     {
       id: "actions",
       header: "Aksi",
       cell: ({ row }) => {
-        const user = row.original;
+        const processedMaterial = row.original;
         return (
           <div className="flex justify-end gap-2">
-            <Button variant="outline" size="sm" onClick={() => onEdit(user)}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onEdit(processedMaterial)}
+            >
               <FilePen className="w-4 h-4" /> Edit
             </Button>
-            {user.role !== "pemilik" && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onDelete(user.id)}
-              >
-                <Trash2 className="w-4 h-4" /> Hapus
-              </Button>
-            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onDelete(processedMaterial.id)}
+            >
+              <Trash2 className="w-4 h-4" /> Hapus
+            </Button>
           </div>
         );
       },
@@ -77,7 +103,7 @@ export function UserTable({ users, onEdit, onDelete }: UserTableProps) {
   ];
 
   const table = useReactTable({
-    data: users,
+    data: processedMaterials,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -93,7 +119,7 @@ export function UserTable({ users, onEdit, onDelete }: UserTableProps) {
       {/* Input Pencarian */}
       <div className="flex items-center py-4">
         <Input
-          placeholder="Cari nama pengguna..."
+          placeholder="Cari nama bahan baku..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(e) =>
             table.getColumn("name")?.setFilterValue(e.target.value)

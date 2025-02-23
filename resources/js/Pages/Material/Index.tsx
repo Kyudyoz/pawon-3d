@@ -11,15 +11,7 @@ import {
 } from "@/Components/ui/dialog";
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
-import { FilePen, Plus, Trash2 } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/Components/ui/table";
+import { Plus } from "lucide-react";
 import { ScrollArea } from "@/Components/ui/scroll-area";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";

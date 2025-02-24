@@ -441,7 +441,7 @@ const Index = () => {
                   type="file"
                   accept="image/*"
                   onChange={(e) => {
-                    const file = e.target.files && e.target.files[0];
+                    const file = e.target.files && e.target.files![0];
                     setData("product_image", file);
                     if (file) {
                       const previewUrl = URL.createObjectURL(file);
@@ -788,7 +788,7 @@ const Index = () => {
                   type="file"
                   accept="image/*"
                   onChange={(e) => {
-                    const file = e.target.files && e.target.files[0];
+                    const file = e.target.files && e.target.files![0];
                     setData("product_image", file);
                     if (file) {
                       const previewUrl = URL.createObjectURL(file);
@@ -1029,56 +1029,93 @@ const Index = () => {
         </DialogContent>
       </Dialog>
 
-      {/* <Dialog open={openShow} onOpenChange={setOpenShow}>
+      <Dialog open={openShow} onOpenChange={setOpenShow}>
         <DialogContent className="sm:max-w-[425px] max-h-[80vh] flex flex-col">
           <DialogHeader className="flex-shrink-0">
-            <DialogTitle>Detail Bahan Baku</DialogTitle>
+            <DialogTitle>Detail Produk</DialogTitle>
           </DialogHeader>
           {showData && (
             <div className="space-y-4 flex-grow overflow-y-auto p-4">
+              <div className="mb-4 text-center">
+                <img
+                  src={showData.product_image}
+                  alt="Gambar Produk Saat Ini"
+                  className="max-h-64 object-contain mx-auto rounded-md border border-gray-300"
+                />
+              </div>
+
               <div>
-                <Label>Nama Olahan</Label>
-                <p>{showData.name}</p>
+                <Label className="text-sm">Nama Produk</Label>
+                <p className="text-sm">{showData.name}</p>
               </div>
               <div>
-                <Label>Jumlah</Label>
-                <p>{showData.quantity}</p>
+                <Label className="text-sm">Kategori</Label>
+                <p className="text-sm">
+                  {categories.find((c) => c.id === showData.category_id)?.name}
+                </p>
               </div>
               <div>
-                <Label className="block mt-4 mb-2">Bahan Baku Per Olahan</Label>
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead>
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Nama Bahan
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Jumlah
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Satuan
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
-                    {showData.processed_material_details.map(
-                      (detail, index) => (
-                        <tr key={index}>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {materials.find((m) => m.id === detail.material_id)
-                              ?.name || "Bahan Baku"}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {detail.material_quantity}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            {detail.material_unit}
-                          </td>
+                {showData.product_compositions[0] && (
+                  <>
+                    <Label className="block mt-4 mb-2 text-sm">Komposisi</Label>
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead>
+                        <tr>
+                          <th className="px-6 py-3 text-left text-xs text-gray-500 uppercase tracking-wider">
+                            Nama Bahan
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs text-gray-500 uppercase tracking-wider">
+                            Jumlah
+                          </th>
+                          {showData.product_compositions[0].material_unit && (
+                            <th className="px-6 py-3 text-left text-xs text-gray-500 uppercase tracking-wider">
+                              Satuan
+                            </th>
+                          )}
                         </tr>
-                      )
-                    )}
-                  </tbody>
-                </table>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {showData.product_compositions.map((detail, index) => (
+                          <tr key={index}>
+                            {showData.product_compositions[0].material_id && (
+                              <>
+                                <td className="px-6 py-4 text-xs whitespace-nowrap">
+                                  {materials.find(
+                                    (m) => m.id === detail.material_id
+                                  )?.name || "Bahan Baku"}
+                                </td>
+                                <td className="px-6 py-4 text-xs whitespace-nowrap">
+                                  {detail.material_quantity}
+                                </td>
+                                <td className="px-6 py-4 text-xs whitespace-nowrap">
+                                  {detail.material_unit}
+                                </td>
+                              </>
+                            )}
+                            {showData.product_compositions[0]
+                              .processed_material_id && (
+                              <>
+                                <td className="px-6 py-4 text-xs whitespace-nowrap">
+                                  {processedMaterials.find(
+                                    (m) => m.id === detail.processed_material_id
+                                  )?.name || "Olahan"}
+                                </td>
+                                <td className="px-6 py-4 text-xs whitespace-nowrap">
+                                  {detail.processed_material_quantity}
+                                </td>
+                              </>
+                            )}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </>
+                )}
+                {!showData.product_compositions[0] && (
+                  <p className="px-6 py-4 text-xs text-center whitespace-nowrap">
+                    Belum ada komposisi
+                  </p>
+                )}
               </div>
             </div>
           )}
@@ -1088,7 +1125,7 @@ const Index = () => {
             </Button>
           </DialogFooter>
         </DialogContent>
-      </Dialog>  */}
+      </Dialog>
     </AuthenticatedLayout>
   );
 };

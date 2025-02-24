@@ -66,7 +66,7 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'price' => 'required|integer',
             'stock' => 'required|integer',
-            'product_image' => 'nullable|file|image',
+            'product_image' => 'nullable',
             'is_ready' => 'boolean',
             'product_compositions' => 'array',
             'product_compositions.*.material_id' => 'nullable|exists:materials,id',

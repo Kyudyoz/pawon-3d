@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('product_compositions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('product_id');
-            $table->uuid('material_id');
-            $table->uuid('processed_material_id');
-            $table->decimal('material_quantity', 10, 0);
-            $table->decimal('processed_material_quantity', 10, 0);
+            $table->uuid('product_id')->nullable();
+            $table->uuid('material_id')->nullable();
+            $table->uuid('processed_material_id')->nullable();
+            $table->decimal('material_quantity', 10, 0)->nullable();
+            $table->decimal('processed_material_quantity', 10, 0)->nullable();
+            $table->string('material_unit', 50)->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')

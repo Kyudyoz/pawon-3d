@@ -43,6 +43,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/inventori/olahan-bahan-baku/{processedMaterial}', [ProcessedMaterialController::class, 'destroy'])->name('processed-material.destroy');
 
     Route::get('/produk', [ProductController::class, 'index'])->name('product.index');
+    Route::post('/produk', [ProductController::class, 'store'])->name('product.store');
+    Route::post('/produk/{product}', [ProductController::class, 'update'])->name('product.update');
+    Route::delete('/produk/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
 });
 
 require __DIR__ . '/auth.php';

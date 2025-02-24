@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('name', 50);
             $table->decimal('price', 10, 0);
             $table->decimal('stock', 10, 0);
-            $table->string('product_image', 255);
-            $table->boolean('is_ready');
+            $table->string('product_image', 255)->nullable();
+            $table->boolean('is_ready')->default(false);
             $table->timestamps();
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');

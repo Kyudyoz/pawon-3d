@@ -16,6 +16,16 @@ class Product extends Model
         'id',
     ];
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function product_compositions()
+    {
+        return $this->hasMany(ProductComposition::class);
+    }
+
     public static function boot()
     {
         parent::boot();

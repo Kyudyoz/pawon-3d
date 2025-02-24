@@ -2,13 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, usePage } from "@inertiajs/react";
 import { Card, CardContent, CardHeader } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/Components/ui/dialog";
+
 import { Input } from "@/Components/ui/input";
 import { Label } from "@/Components/ui/label";
 import { Plus, Trash } from "lucide-react";
@@ -30,6 +24,13 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from "@/Components/ui/popover";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/Components/ui/dialog";
 
 type Material = {
   id: string;
@@ -261,7 +262,7 @@ const Index = () => {
                 )}
               </div>
               <div>
-                <Label className="block mt-4 mb-2">Bahan Baku</Label>
+                <Label className="block mt-4 mb-2">Bahan Baku Per Olahan</Label>
                 {data.processed_material_details.map((detail, index) => (
                   <div key={index} className="flex gap-2 mt-2 items-center">
                     <Popover>
@@ -400,7 +401,7 @@ const Index = () => {
                 )}
               </div>
               <div>
-                <Label className="block mt-4 mb-2">Bahan Baku</Label>
+                <Label className="block mt-4 mb-2">Bahan Baku Per Olahan</Label>
                 {data.processed_material_details.map((detail, index) => (
                   <div key={index} className="flex gap-2 mt-2 items-center">
                     <Popover>

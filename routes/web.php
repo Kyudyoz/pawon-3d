@@ -4,6 +4,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProcessedMaterialController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/produk', [ProductController::class, 'store'])->name('product.store');
     Route::post('/produk/{product}', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/produk/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
+
+    Route::get('/pos', [TransactionController::class, 'pos'])->name('transaction.pos');
+    Route::get('/transaksi', [TransactionController::class, 'index'])->name('transaction.index');
+    Route::post('/transaksi', [TransactionController::class, 'store'])->name('transaction.store');
 });
 
 require __DIR__ . '/auth.php';

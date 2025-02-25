@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('product_id');
             $table->decimal('quantity', 3, 0);
             $table->decimal('price', 10, 0);
-            $table->string('unique_code', 255)->unique();
+            $table->string('unique_code', 255)->unique()->nullable();
             $table->boolean('is_review')->default(false);
             $table->timestamps();
 

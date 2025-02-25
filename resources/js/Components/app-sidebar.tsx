@@ -198,7 +198,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                   }
                 >
                   <CalculatorIcon />
-                  <Link href="/pos">POS</Link>
+                  <Link href="/pos">Point of Sale</Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
 

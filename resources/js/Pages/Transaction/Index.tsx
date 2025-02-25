@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, usePage } from "@inertiajs/react";
+import { Head, router, useForm, usePage } from "@inertiajs/react";
 import { Card, CardContent, CardHeader } from "@/Components/ui/card";
 import { Button } from "@/Components/ui/button";
 
@@ -83,6 +83,10 @@ const Index = () => {
     }
   }, [flash]);
 
+  const handleEdit = (id: string) => {
+    router.get(`/transaksi/${id}`);
+  };
+
   const handleShow = (transaction: Transaction) => {
     setShowData(transaction);
     setOpenShow(true);
@@ -120,6 +124,7 @@ const Index = () => {
             <CardContent className="p-0 px-6">
               <TransactionTable
                 transactions={transactions}
+                onEdit={handleEdit}
                 onShow={handleShow}
                 onDelete={handleDelete}
               />

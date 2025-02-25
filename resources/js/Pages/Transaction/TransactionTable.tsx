@@ -18,7 +18,7 @@ import {
 } from "@/Components/ui/table";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
-import { File, Trash2 } from "lucide-react";
+import { File, FilePen, Trash2 } from "lucide-react";
 import { User } from "@/types";
 
 type Product = {
@@ -51,11 +51,13 @@ type Transaction = {
 type TransactionTableProps = {
   transactions: Transaction[];
   onShow: (transaction: Transaction) => void;
+  onEdit: (id: string) => void;
   onDelete: (id: string) => void;
 };
 
 export function TransactionTable({
   transactions,
+  onEdit,
   onShow,
   onDelete,
 }: TransactionTableProps) {
@@ -114,6 +116,13 @@ export function TransactionTable({
         const transaction = row.original;
         return (
           <div className="flex justify-end gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onEdit(transaction.id)}
+            >
+              <FilePen className="w-4 h-4" /> Edit
+            </Button>
             <Button
               variant="outline"
               size="sm"

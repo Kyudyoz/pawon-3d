@@ -51,6 +51,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pos', [TransactionController::class, 'pos'])->name('transaction.pos');
     Route::get('/transaksi', [TransactionController::class, 'index'])->name('transaction.index');
     Route::post('/transaksi', [TransactionController::class, 'store'])->name('transaction.store');
+    Route::get('/transaksi/{transaction}', [TransactionController::class, 'edit'])->name('transaction.edit');
+    Route::put('/transaksi/{transaction}', [TransactionController::class, 'update'])->name('transaction.update');
+    Route::delete('/transaksi/{transaction}', [TransactionController::class, 'destroy'])->name('transaction.destroy');
 });
 
 require __DIR__ . '/auth.php';

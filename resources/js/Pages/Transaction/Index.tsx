@@ -153,6 +153,20 @@ const Index = () => {
                     {showData.payment_method})
                   </p>
                 </div>
+                <div>
+                  <Label className="text-sm">DP</Label>
+                  {showData.dp > 0 ? (
+                    <p className="text-sm">
+                      Rp. {showData.dp.toLocaleString()}
+                    </p>
+                  ) : (
+                    <p className="text-sm">Rp. 0</p>
+                  )}
+                </div>
+                <div>
+                  <Label className="text-sm">Status</Label>
+                  <p className="text-sm">{showData.payment_status}</p>
+                </div>
                 {showData.type == "pesanan" && (
                   <div>
                     <Label className="text-sm">Jadwal Pengambilan</Label>

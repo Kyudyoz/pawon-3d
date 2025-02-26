@@ -83,8 +83,10 @@ const Pos = () => {
 
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [payment, setPayment] = useState("");
+  const [paymentStatus, setPaymentStatus] = useState("");
   const [type, setType] = useState("siap beli");
   const [date, setDate] = useState<Date | undefined>(new Date());
+  const [dp, setDp] = useState(0);
 
   const handleDateChange = (value: Date | undefined) => {
     setDate(value);
@@ -171,6 +173,8 @@ const Pos = () => {
         0
       ),
       payment_method: payment,
+      payment_status: paymentStatus,
+      dp: dp,
       type: type,
       schedule: date ? format(date, "yyyy-MM-dd") : null,
       details: cart.map((item) => ({
@@ -199,6 +203,8 @@ const Pos = () => {
       onSuccess: () => {
         setCart([]);
         setPayment("");
+        setPaymentStatus("");
+        setDp(0);
       },
     });
   };
@@ -228,6 +234,9 @@ const Pos = () => {
     setSearchQuery("");
     setActiveCategory(null);
     setPayment("");
+    setPaymentStatus("");
+    setDate(new Date());
+    setDp(0);
 
     if (value === "order") {
       setType("pesanan");
@@ -565,9 +574,9 @@ const Pos = () => {
                           htmlFor="metode-pembayaran"
                           className="block mb-2"
                         >
-                          Metode Pembayaran
+                          Pembayaran
                         </Label>
-                        <div className="mb-2">
+                        <div className="mb-2 grid grid-cols-2 gap-2">
                           <Select
                             onValueChange={(value) => setPayment(value)}
                             value={payment}
@@ -583,13 +592,43 @@ const Pos = () => {
                               </SelectItem>
                             </SelectContent>
                           </Select>
+                          <Select
+                            onValueChange={(value) => setPaymentStatus(value)}
+                            value={paymentStatus}
+                            required
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Pilih Status Pembayaran" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="belum lunas">
+                                Belum Lunas
+                              </SelectItem>
+                              <SelectItem value="lunas">Lunas</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="mb-2">
+                          <Label htmlFor="dp" className="block mb-2">
+                            DP
+                          </Label>
+                          <Input
+                            id="dp"
+                            type="number"
+                            value={dp || 0}
+                            onChange={(e) =>
+                              setDp(parseInt(e.target.value) || 0)
+                            }
+                            className="w-full"
+                          />
                         </div>
                         <div className="border-t pt-4">
                           <p className="font-semibold mb-4 text-right">
                             Total: Rp{" "}
                             {cart
                               .reduce(
-                                (sum, item) => sum + item.price * item.quantity,
+                                (sum, item) =>
+                                  sum + item.price * item.quantity - dp,
                                 0
                               )
                               .toLocaleString()}

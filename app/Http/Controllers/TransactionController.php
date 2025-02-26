@@ -45,14 +45,23 @@ class TransactionController extends Controller
 
         $schedule = \Carbon\Carbon::parse($request->schedule)->format('Y-m-d');
 
+        $status = 'selesai';
+
+        if ($request->type == 'siap beli') {
+            $status = 'selesai';
+        } elseif ($request->type == 'pesanan') {
+            $status = 'pending';
+        }
+
         // Buat transaksi
         $transaction = Transaction::create([
             'user_id' => $request->user_id,
             'total_amount' => ($request->total_amount),
             'payment_method' => $request->payment_method,
             'schedule' => $schedule,
-            'payment_status' => 'lunas',
-            'status' => 'selesai',
+            'payment_status' => $request->payment_status,
+            'dp' => $request->dp,
+            'status' => $status,
             'type' => $request->type,
         ]);
 
@@ -102,13 +111,21 @@ class TransactionController extends Controller
         ]);
         $schedule = \Carbon\Carbon::parse($request->schedule)->format('Y-m-d');
 
+        $status = 'selesai';
+
+        if ($request->type == 'siap beli') {
+            $status = 'selesai';
+        } elseif ($request->type == 'pesanan') {
+            $status = 'pending';
+        }
 
         $transaction->update([
             'user_id' => $request->user_id,
             'total_amount' => ($request->total_amount),
             'payment_method' => $request->payment_method,
-            'payment_status' => 'lunas',
-            'status' => 'selesai',
+            'payment_status' => $request->payment_status,
+            'dp' => $request->dp,
+            'status' => $status,
             'type' => $request->type,
             'schedule' => $schedule,
         ]);

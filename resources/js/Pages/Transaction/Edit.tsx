@@ -50,6 +50,8 @@ interface Transaction {
   user_id: string;
   total_amount: number;
   payment_method: string;
+  payment_status: string;
+  dp: number;
   type: string;
   schedule: Date;
   details: TransactionDetail[];
@@ -89,6 +91,10 @@ const EditTransaction = () => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [payment, setPayment] = useState(transaction.payment_method);
   const [type, setType] = useState(transaction.type);
+  const [paymentStatus, setPaymentStatus] = useState(
+    transaction.payment_status
+  );
+  const [dp, setDp] = useState(transaction.dp);
 
   const initialDate = transaction.schedule
     ? new Date(transaction.schedule)
@@ -176,6 +182,8 @@ const EditTransaction = () => {
       ),
       payment_method: payment,
       type: type,
+      payment_status: paymentStatus,
+      dp: dp,
       schedule: date ? format(date, "yyyy-MM-dd") : null,
 
       details: cart.map((item) => ({
@@ -497,7 +505,6 @@ const EditTransaction = () => {
                           <DatePicker
                             value={date}
                             onSelect={(value) => setDate(value)}
-                            className="mx-1"
                           />
                         </div>
 
@@ -505,9 +512,9 @@ const EditTransaction = () => {
                           htmlFor="metode-pembayaran"
                           className="block mb-2"
                         >
-                          Metode Pembayaran
+                          Pembayaran
                         </Label>
-                        <div className="mb-2">
+                        <div className="mb-2 grid grid-cols-2 gap-2">
                           <Select
                             onValueChange={(value) => setPayment(value)}
                             value={payment}
@@ -523,14 +530,43 @@ const EditTransaction = () => {
                               </SelectItem>
                             </SelectContent>
                           </Select>
+                          <Select
+                            onValueChange={(value) => setPaymentStatus(value)}
+                            value={paymentStatus}
+                            required
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Pilih Status Pembayaran" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="belum lunas">
+                                Belum Lunas
+                              </SelectItem>
+                              <SelectItem value="lunas">Lunas</SelectItem>
+                            </SelectContent>
+                          </Select>
                         </div>
-
+                        <div className="mb-2">
+                          <Label htmlFor="dp" className="block mb-2">
+                            DP
+                          </Label>
+                          <Input
+                            id="dp"
+                            type="number"
+                            value={dp || 0}
+                            onChange={(e) =>
+                              setDp(parseInt(e.target.value) || 0)
+                            }
+                            className="w-full"
+                          />
+                        </div>
                         <div className="border-t pt-4">
-                          <p className="font-semibold text-right">
+                          <p className="font-semibold mb-4 text-right">
                             Total: Rp{" "}
                             {cart
                               .reduce(
-                                (sum, item) => sum + item.price * item.quantity,
+                                (sum, item) =>
+                                  sum + item.price * item.quantity - dp,
                                 0
                               )
                               .toLocaleString()}

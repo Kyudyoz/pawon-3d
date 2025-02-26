@@ -25,6 +25,10 @@ class TransactionController extends Controller
     {
         $transactions = Transaction::with(['user', 'details', 'details.product'])->latest()->get();
 
+        $transactions->map(function ($transaction) {
+            $transaction->schedule = \Carbon\Carbon::parse($transaction->schedule)->format('d-M-Y');
+        });
+
         return Inertia::render('Transaction/Index', [
             'transactions' => $transactions,
         ]);
@@ -39,14 +43,17 @@ class TransactionController extends Controller
             'details' => 'required|array',
         ]);
 
+        $schedule = \Carbon\Carbon::parse($request->schedule)->format('Y-m-d');
+
         // Buat transaksi
         $transaction = Transaction::create([
             'user_id' => $request->user_id,
             'total_amount' => ($request->total_amount),
             'payment_method' => $request->payment_method,
+            'schedule' => $schedule,
             'payment_status' => 'lunas',
             'status' => 'selesai',
-            'type' => 'siap beli',
+            'type' => $request->type,
         ]);
 
         // Buat detail transaksi
@@ -58,7 +65,10 @@ class TransactionController extends Controller
                 'price' => ($detail['price']),
                 'unique_code' => uniqid('transaction-'),
             ]);
-            Product::find($detail['product_id'])->decrement('stock', ($detail['quantity']));
+
+            if ($request->type == 'siap beli') {
+                Product::find($detail['product_id'])->decrement('stock', ($detail['quantity']));
+            }
         }
 
         return redirect()->back()->with('success', 'Transaksi berhasil!');
@@ -67,9 +77,11 @@ class TransactionController extends Controller
     public function edit(Transaction $transaction)
     {
         $transaction = Transaction::with('details', 'details.product')->findOrFail($transaction->id);
-        foreach ($transaction->details as $detail) {
-            $detail->product->stock = $detail->product->stock + $detail->quantity;
-            $detail->product->save();
+        if ($transaction->type == 'siap beli') {
+            foreach ($transaction->details as $detail) {
+                $detail->product->stock = $detail->product->stock + $detail->quantity;
+                $detail->product->save();
+            }
         }
         $categories = Category::all();
         $products = Product::orderBy('stock', 'desc')->get();
@@ -88,6 +100,8 @@ class TransactionController extends Controller
             'payment_method' => 'required|in:tunai,non tunai',
             'details' => 'required|array',
         ]);
+        $schedule = \Carbon\Carbon::parse($request->schedule)->format('Y-m-d');
+
 
         $transaction->update([
             'user_id' => $request->user_id,
@@ -95,7 +109,8 @@ class TransactionController extends Controller
             'payment_method' => $request->payment_method,
             'payment_status' => 'lunas',
             'status' => 'selesai',
-            'type' => 'siap beli',
+            'type' => $request->type,
+            'schedule' => $schedule,
         ]);
 
         $transaction->details()->delete();
@@ -109,10 +124,13 @@ class TransactionController extends Controller
                 'unique_code' => uniqid('transaction-'),
             ]);
         }
-
-        $product = Product::where('id', $detail['product_id'])->first();
-        $product->stock = $product->stock - $detail['quantity'];
-        $product->save();
+        if ($request->type == 'siap beli') {
+            foreach ($transaction->details as $detail) {
+                $product = Product::where('id', $detail['product_id'])->first();
+                $product->stock = $product->stock - $detail['quantity'];
+                $product->save();
+            }
+        }
         return redirect()->route('transaction.index')->with('success', 'Transaksi berhasil diperbarui!');
     }
 

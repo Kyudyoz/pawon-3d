@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Link, usePage } from "@inertiajs/react";
 import {
-  Cake,
   CakeSlice,
   CalculatorIcon,
   ChevronRight,
@@ -175,18 +174,50 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               </Collapsible>
 
               {/* Produk */}
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  className={
-                    currentUrl === "/produk"
-                      ? "bg-gray-700 text-white"
-                      : "text-gray-700"
-                  }
-                >
-                  <CakeSlice />
-                  <Link href="/produk">Produk</Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              <Collapsible
+                defaultOpen={currentUrl.includes("/produk")}
+                className="group/collapsible"
+              >
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton tooltip="Produk">
+                      <CakeSlice />
+                      <span>Produk</span>
+
+                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton
+                          asChild
+                          className={
+                            currentUrl === "/produk/kategori"
+                              ? "bg-gray-700 text-white"
+                              : "text-gray-700"
+                          }
+                        >
+                          <Link href="/produk/kategori">Kategori</Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                      <SidebarMenuSubItem>
+                        <SidebarMenuSubButton
+                          asChild
+                          className={
+                            currentUrl === "/produk"
+                              ? "bg-gray-700 text-white"
+                              : "text-gray-700"
+                          }
+                        >
+                          <Link href="/produk">Daftar Produk</Link>
+                        </SidebarMenuSubButton>
+                      </SidebarMenuSubItem>
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
 
               {/* POS */}
               <SidebarMenuItem>

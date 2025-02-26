@@ -6,36 +6,49 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/Components/ui/button";
 import { Calendar } from "@/Components/ui/calendar";
 import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
 } from "@/Components/ui/popover";
 
-export default function DatePicker() {
-    const [date, setDate] = React.useState<Date | undefined>(new Date());
+export default function DatePicker({
+  value,
+  onSelect,
+  className = "",
+  ...props
+}: {
+  value: Date | undefined;
+  onSelect: (value: Date | undefined) => void;
+  className?: string;
+}) {
+  const [date, setDate] = React.useState<Date | undefined>(value);
 
-    return (
-        <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                    variant={"outline"}
-                    className={cn(
-                        "w-[210px] justify-start text-left font-normal",
-                        !date && "text-muted-foreground"
-                    )}
-                >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? format(date, "PPP") : <span>Pick a date</span>}
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0">
-                <Calendar
-                    mode="single"
-                    selected={date}
-                    onSelect={setDate}
-                    initialFocus
-                />
-            </PopoverContent>
-        </Popover>
-    );
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant={"outline"}
+          className={cn(
+            "w-[210px] justify-start text-left font-normal",
+            !date && "text-muted-foreground",
+            className
+          )}
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {date ? format(date, "PPP") : <span>Pick a date</span>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0">
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={(newDate) => {
+            setDate(newDate);
+            onSelect(newDate);
+          }}
+          initialFocus
+        />
+      </PopoverContent>
+    </Popover>
+  );
 }

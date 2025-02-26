@@ -42,6 +42,7 @@ type Transaction = {
   payment_status: string;
   status: string;
   type: string;
+  schedule: Date;
   prize_code: string;
   spin_chance: number;
   details: TransactionDetail[];
@@ -136,17 +137,37 @@ const Index = () => {
       <Dialog open={openShow} onOpenChange={setOpenShow}>
         <DialogContent className="sm:max-w-[60%] max-h-[80vh] flex flex-col">
           <DialogHeader className="flex-shrink-0">
-            <DialogTitle>Detail Transaksi</DialogTitle>
+            <DialogTitle>Detail Transaksi ({showData?.type})</DialogTitle>
           </DialogHeader>
           {showData && (
             <ScrollArea className="space-y-4 flex-grow overflow-y-auto p-4">
               <div>
-                <Label className="text-sm">Penanggung Jawab</Label>
+                <Label className="text-sm block">Penanggung Jawab</Label>
                 <p className="text-sm">{showData.user.name}</p>
               </div>
-              <div>
-                <Label className="text-sm">Total Harga</Label>
-                <p className="text-sm">{showData.total_amount}</p>
+              <div className="grid grid-cols-2">
+                <div>
+                  <Label className="text-sm">Total Harga</Label>
+                  <p className="text-sm">
+                    Rp. {showData.total_amount.toLocaleString()} (
+                    {showData.payment_method})
+                  </p>
+                </div>
+                {showData.type == "pesanan" && (
+                  <div>
+                    <Label className="text-sm">Jadwal Pengambilan</Label>
+
+                    <p className="text-sm">
+                      {showData.schedule
+                        ? showData.schedule.toLocaleString("id-ID", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })
+                        : "-"}
+                    </p>
+                  </div>
+                )}
               </div>
               <div>
                 {showData.details[0] && (
@@ -177,7 +198,10 @@ const Index = () => {
                             </td>
                             <td className="px-6 py-4 text-xs whitespace-nowrap">
                               <img
-                                src={detail.product.product_image}
+                                src={
+                                  detail.product.product_image ??
+                                  "/avatars/no-img.jpg"
+                                }
                                 alt={detail.product.name}
                                 className="w-10 h-10 object-cover rounded-md"
                               />

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('payment_status', 20);
             $table->string('status', 20);
             $table->string('type', 20);
+            $table->date('schedule')->nullable();
             $table->string('prize_code', 8)->nullable();
             $table->decimal('spin_chance', 3, 0)->nullable();
             $table->timestamps();

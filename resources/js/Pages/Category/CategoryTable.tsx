@@ -18,131 +18,52 @@ import {
 } from "@/Components/ui/table";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
-import { File, FilePen, Trash2 } from "lucide-react";
-import { User } from "@/types";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/Components/ui/select";
+import { FilePen, Trash2 } from "lucide-react";
 
-type Product = {
+type Category = {
   id: string;
   name: string;
-  product_image: string;
 };
 
-type TransactionDetail = {
-  id: string;
-  quantity: number;
-  price: number;
-  is_review: boolean;
-  product: Product;
-};
-
-type Transaction = {
-  id: string;
-  user: User;
-  total_amount: number;
-  dp: number;
-  discount: number;
-  payment_method: string;
-  payment_status: string;
-  status: string;
-  type: string;
-  schedule: Date;
-  prize_code: string;
-  spin_chance: number;
-  details: TransactionDetail[];
-};
-
-type TransactionTableProps = {
-  transactions: Transaction[];
-  onShow: (transaction: Transaction) => void;
-  onEdit: (id: string) => void;
+type CategoryTableProps = {
+  categories: Category[];
+  onEdit: (category: Category) => void;
   onDelete: (id: string) => void;
 };
 
-export function TransactionTable({
-  transactions,
+export function CategoryTable({
+  categories,
   onEdit,
-  onShow,
   onDelete,
-}: TransactionTableProps) {
+}: CategoryTableProps) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
 
-  // Tambahkan kolom "type" untuk keperluan filtering
-  const columns: ColumnDef<Transaction>[] = [
+  const columns: ColumnDef<Category>[] = [
     {
-      id: "user.name",
-      accessorKey: "user.name",
-      header: "Nama",
-    },
-    {
-      id: "total_amount",
-      header: "Total",
-      cell: ({ row }) => {
-        const transaction = row.original;
-        return (
-          <div className="flex gap-2">
-            <span>Rp. {transaction.total_amount}</span>
-          </div>
-        );
-      },
-    },
-    {
-      accessorKey: "payment_status",
-      header: "Status Pembayaran",
-    },
-    {
-      accessorKey: "status",
-      header: "Status Transaksi",
-    },
-    // Kolom type untuk filter (tidak ingin ditampilkan)
-    {
-      accessorKey: "type",
-      header: "Tipe Transaksi",
-    },
-    {
-      id: "details",
-      header: "Rincian Transaksi",
-      cell: ({ row }) => {
-        const transaction = row.original;
-        return (
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onShow(transaction)}
-            >
-              <File className="w-4 h-4" /> Lihat Detail
-            </Button>
-          </div>
-        );
-      },
+      accessorKey: "name",
+      header: "Kategori",
     },
     {
       id: "actions",
       header: "Aksi",
       cell: ({ row }) => {
-        const transaction = row.original;
+        const category = row.original;
         return (
           <div className="flex justify-end gap-2">
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onEdit(transaction.id)}
+              onClick={() => onEdit(category)}
             >
               <FilePen className="w-4 h-4" /> Edit
             </Button>
+
             <Button
               variant="outline"
               size="sm"
-              onClick={() => onDelete(transaction.id)}
+              onClick={() => onDelete(category.id)}
             >
               <Trash2 className="w-4 h-4" /> Hapus
             </Button>
@@ -153,7 +74,7 @@ export function TransactionTable({
   ];
 
   const table = useReactTable({
-    data: transactions,
+    data: categories,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -161,44 +82,21 @@ export function TransactionTable({
     onColumnFiltersChange: setColumnFilters,
     state: {
       columnFilters,
-      // Sembunyikan kolom "type" sehingga tidak muncul di tabel
-      columnVisibility: { type: false },
     },
   });
 
   return (
     <div className="w-full">
-      {/* Filter Pencarian dan Dropdown Filter untuk transaction.type */}
-      <div className="flex items-center space-x-4 py-4">
+      {/* Input Pencarian */}
+      <div className="flex items-center py-4">
         <Input
-          placeholder="Cari..."
-          value={
-            (table.getColumn("user.name")?.getFilterValue() as string) ?? ""
-          }
+          placeholder="Cari kategori..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(e) =>
-            table.getColumn("user.name")?.setFilterValue(e.target.value)
+            table.getColumn("name")?.setFilterValue(e.target.value)
           }
           className="max-w-sm"
         />
-        <Select
-          onValueChange={(value) => {
-            if (value === "all") {
-              table.getColumn("type")?.setFilterValue(undefined);
-            } else {
-              table.getColumn("type")?.setFilterValue(value);
-            }
-          }}
-          value={(table.getColumn("type")?.getFilterValue() as string) ?? "all"}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Filter Tipe Transaksi" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Semua</SelectItem>
-            <SelectItem value="siap beli">Siap Beli</SelectItem>
-            <SelectItem value="pesanan">Pesanan</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
 
       {/* Tabel */}

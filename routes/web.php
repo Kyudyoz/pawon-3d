@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProcessedMaterialController;
 use App\Http\Controllers\ProductController;
@@ -47,6 +48,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/produk', [ProductController::class, 'store'])->name('product.store');
     Route::post('/produk/{product}', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/produk/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
+
+    Route::get('/produk/kategori', [CategoryController::class, 'index'])->name('category.index');
+    Route::post('/kategori', [CategoryController::class, 'store'])->name('category.store');
+    Route::put('/produk/kategori/{category}', [CategoryController::class, 'update'])->name('category.update');
+    Route::delete('/produk/kategori/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
     Route::get('/pos', [TransactionController::class, 'pos'])->name('transaction.pos');
     Route::get('/transaksi', [TransactionController::class, 'index'])->name('transaction.index');

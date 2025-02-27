@@ -23,7 +23,7 @@ class TransactionController extends Controller
 
     public function index()
     {
-        $transactions = Transaction::with(['user', 'details', 'details.product'])->latest()->get();
+        $transactions = Transaction::with(['user', 'details', 'details.product', 'details.product.productions'])->latest()->get();
 
         $transactions->map(function ($transaction) {
             $transaction->schedule = \Carbon\Carbon::parse($transaction->schedule)->format('d-M-Y');

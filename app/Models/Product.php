@@ -26,6 +26,16 @@ class Product extends Model
         return $this->hasMany(ProductComposition::class);
     }
 
+    public function productions()
+    {
+        return $this->hasMany(Production::class);
+    }
+
+    public function transaction_details()
+    {
+        return $this->hasMany(TransactionDetail::class);
+    }
+
     public static function boot()
     {
         parent::boot();

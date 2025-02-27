@@ -29,10 +29,20 @@ import {
 } from "@/Components/ui/select";
 import { router } from "@inertiajs/react";
 
+type Production = {
+  id: string;
+  count: number;
+  status: string;
+  time: string;
+  quantity: number;
+  material_quantity: number;
+  processed_material_quantity: number;
+};
 type Product = {
   id: string;
   name: string;
   product_image: string;
+  productions: Production[];
 };
 
 type TransactionDetail = {
@@ -135,7 +145,7 @@ export function TransactionTable({
     },
     {
       accessorKey: "status",
-      header: "Status Transaksi",
+      header: "Status",
     },
 
     {

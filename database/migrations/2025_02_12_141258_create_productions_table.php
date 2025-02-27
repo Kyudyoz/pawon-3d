@@ -14,18 +14,17 @@ return new class extends Migration
         Schema::create('productions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('product_id')->nullable();
-            $table->uuid('material_id')->nullable();
-            $table->uuid('processed_material_id')->nullable();
+            $table->uuid('transaction_id')->nullable();
             $table->decimal('count', 3, 0)->nullable();
             $table->string('status', 20)->nullable();
             $table->time('time')->nullable();
+            $table->decimal('quantity', 10, 0)->nullable();
             $table->decimal('material_quantity', 10, 0)->nullable();
             $table->decimal('processed_material_quantity', 10, 0)->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->foreign('material_id')->references('id')->on('materials')->onDelete('cascade');
-            $table->foreign('processed_material_id')->references('id')->on('processed_materials')->onDelete('cascade');
+            $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
         });
     }
 

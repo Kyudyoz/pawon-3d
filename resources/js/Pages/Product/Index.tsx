@@ -309,15 +309,12 @@ const Index = () => {
   const defaultTab = (() => {
     const comp = data.product_compositions?.[0];
     if (comp) {
-      // Jika material_id tidak ada (null/falsy) dan processed_material_id ada, tampilkan processed_material
       if (!comp.material_id && comp.processed_material_id) {
         return "processed_material";
       }
-      // Jika processed_material_id tidak ada dan material_id ada, tampilkan material
       if (comp.material_id && !comp.processed_material_id) {
         return "material";
       }
-      // Jika keduanya ada atau keduanya tidak ada, kita bisa memilih default, misalnya "material"
       return "material";
     }
     return "material";

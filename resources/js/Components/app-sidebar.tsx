@@ -123,7 +123,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               </Collapsible>
 
               {/* Produksi */}
-              <Collapsible
+              {/* <Collapsible
                 defaultOpen={currentUrl.includes("/produksi")}
                 className="group/collapsible"
               >
@@ -170,11 +170,26 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                     </SidebarMenuSub>
                   </CollapsibleContent>
                 </SidebarMenuItem>
-              </Collapsible>
+              </Collapsible> */}
+
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  className={
+                    currentUrl === "/produksi"
+                      ? "bg-gray-700 text-white"
+                      : "text-gray-700"
+                  }
+                >
+                  <Microwave />
+                  <Link href="/produksi">Produksi</Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
 
               {/* Produk */}
               <Collapsible
-                defaultOpen={currentUrl.includes("/produk")}
+                defaultOpen={
+                  currentUrl.includes("/produk") && currentUrl !== "/produksi"
+                }
                 className="group/collapsible"
               >
                 <SidebarMenuItem>

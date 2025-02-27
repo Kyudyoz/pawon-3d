@@ -25,6 +25,11 @@ class Transaction extends Model
         return $this->hasMany(TransactionDetail::class);
     }
 
+    public function productions()
+    {
+        return $this->hasMany(Production::class);
+    }
+
     public static function boot()
     {
         parent::boot();

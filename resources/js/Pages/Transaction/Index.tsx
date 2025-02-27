@@ -19,10 +19,20 @@ import {
   DialogTitle,
 } from "@/Components/ui/dialog";
 
+type Production = {
+  id: string;
+  count: number;
+  status: string;
+  time: string;
+  quantity: number;
+  material_quantity: number;
+  processed_material_quantity: number;
+};
 type Product = {
   id: string;
   name: string;
   product_image: string;
+  productions: Production[];
 };
 
 type TransactionDetail = {
@@ -202,6 +212,11 @@ const Index = () => {
                           <th className="px-6 py-3 text-left text-xs text-gray-500 uppercase tracking-wider">
                             Harga
                           </th>
+                          {showData.type === "pesanan" && (
+                            <th className="px-6 py-3 text-left text-xs text-gray-500 uppercase tracking-wider">
+                              Status Produksi
+                            </th>
+                          )}
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
@@ -226,6 +241,14 @@ const Index = () => {
                             <td className="px-6 py-4 text-xs whitespace-nowrap">
                               {detail.price}
                             </td>
+                            {showData.type === "pesanan" && (
+                              <td className="px-6 py-4 text-xs whitespace-nowrap">
+                                {detail.product.productions &&
+                                detail.product.productions.length > 0
+                                  ? detail.product.productions[0].status || "-"
+                                  : "-"}
+                              </td>
+                            )}
                           </tr>
                         ))}
                       </tbody>

@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\ProcessedMaterialController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
@@ -43,6 +44,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/inventori/olahan-bahan-baku', [ProcessedMaterialController::class, 'store'])->name('processed-material.store');
     Route::put('/inventori/olahan-bahan-baku/{processedMaterial}', [ProcessedMaterialController::class, 'update'])->name('processed-material.update');
     Route::delete('/inventori/olahan-bahan-baku/{processedMaterial}', [ProcessedMaterialController::class, 'destroy'])->name('processed-material.destroy');
+
+    Route::get('/produksi', [ProductionController::class, 'index'])->name('production.index');
+    Route::post('/produksi', [ProductionController::class, 'store'])->name('production.store');
+    Route::put('/produksi/{production}', [ProductionController::class, 'update'])->name('production.update');
+    Route::delete('/produksi/{production}', [ProductionController::class, 'destroy'])->name('production.destroy');
 
     Route::get('/produk', [ProductController::class, 'index'])->name('product.index');
     Route::post('/produk', [ProductController::class, 'store'])->name('product.store');

@@ -151,6 +151,19 @@ class TransactionController extends Controller
         return redirect()->route('transaction.index')->with('success', 'Transaksi berhasil diperbarui!');
     }
 
+    public function updatePaymentStatus(Request $request, Transaction $transaction)
+    {
+        $request->validate([
+            'payment_status' => 'required|in:lunas,belum lunas',
+        ]);
+
+        $transaction->update([
+            'payment_status' => $request->payment_status,
+        ]);
+
+        return redirect()->route('transaction.index')->with('success', 'Status pembayaran berhasil diperbarui!');
+    }
+
     public function destroy(Transaction $transaction)
     {
         $transaction->delete();

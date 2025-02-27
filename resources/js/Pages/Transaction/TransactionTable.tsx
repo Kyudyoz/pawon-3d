@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/Components/ui/select";
+import { router } from "@inertiajs/react";
 
 type Product = {
   id: string;
@@ -75,7 +76,6 @@ export function TransactionTable({
     []
   );
 
-  // Tambahkan kolom "type" untuk keperluan filtering
   const columns: ColumnDef<Transaction>[] = [
     {
       id: "user.name",
@@ -95,14 +95,49 @@ export function TransactionTable({
       },
     },
     {
+      id: "payment_status",
       accessorKey: "payment_status",
       header: "Status Pembayaran",
+      filterFn: (row, columnId, filterValue) =>
+        row.getValue<string>(columnId).toLowerCase() ===
+        filterValue.toLowerCase(),
+      cell: ({ row }) => {
+        const transaction = row.original;
+        const [paymentStatus, setPaymentStatus] = React.useState<string>(
+          transaction.payment_status
+        );
+        const handleUpdate = (value: string) => {
+          const updatedData = {
+            payment_status: value,
+          };
+
+          router.put(`/transaksi/${transaction.id}/paymentStatus`, updatedData);
+        };
+        return (
+          <div className="flex gap-2">
+            <Select
+              onValueChange={(value) => {
+                handleUpdate(value);
+              }}
+              value={paymentStatus}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Status Pembayaran" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="belum lunas">Belum Lunas</SelectItem>
+                <SelectItem value="lunas">Lunas</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        );
+      },
     },
     {
       accessorKey: "status",
       header: "Status Transaksi",
     },
-    // Kolom type untuk filter (tidak ingin ditampilkan)
+
     {
       accessorKey: "type",
       header: "Tipe Transaksi",
@@ -161,7 +196,6 @@ export function TransactionTable({
     onColumnFiltersChange: setColumnFilters,
     state: {
       columnFilters,
-      // Sembunyikan kolom "type" sehingga tidak muncul di tabel
       columnVisibility: { type: false },
     },
   });
@@ -197,6 +231,28 @@ export function TransactionTable({
             <SelectItem value="all">Semua</SelectItem>
             <SelectItem value="siap beli">Siap Beli</SelectItem>
             <SelectItem value="pesanan">Pesanan</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select
+          onValueChange={(value) => {
+            if (value === "all") {
+              table.getColumn("payment_status")?.setFilterValue(undefined);
+            } else {
+              table.getColumn("payment_status")?.setFilterValue(value);
+            }
+          }}
+          value={
+            (table.getColumn("payment_status")?.getFilterValue() as string) ??
+            "all"
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Filter Status Pembayaran" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Semua</SelectItem>
+            <SelectItem value="belum lunas">Belum Lunas</SelectItem>
+            <SelectItem value="lunas">Lunas</SelectItem>
           </SelectContent>
         </Select>
       </div>

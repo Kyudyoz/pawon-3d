@@ -6,7 +6,6 @@ import {
   ChevronRight,
   ClipboardCheck,
   LayoutDashboard,
-  MessageCircleReply,
   Microwave,
   PackageOpen,
   Users,
@@ -248,7 +247,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
               </SidebarMenuItem>
 
               {/* Ulasan */}
-              <SidebarMenuItem>
+              {/* <SidebarMenuItem>
                 <SidebarMenuButton
                   className={
                     currentUrl === "/ulasan"
@@ -259,7 +258,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
                   <MessageCircleReply />
                   <Link href="/ulasan">Ulasan</Link>
                 </SidebarMenuButton>
-              </SidebarMenuItem>
+              </SidebarMenuItem> */}
             </SidebarMenu>
           </SidebarGroup>
         </ScrollArea>

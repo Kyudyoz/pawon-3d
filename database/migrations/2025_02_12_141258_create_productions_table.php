@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('productions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('product_id');
-            $table->uuid('material_id');
-            $table->uuid('processed_material_id');
-            $table->decimal('count', 3, 0);
-            $table->string('status', 20);
-            $table->time('time');
-            $table->decimal('material_quantity', 10, 0);
-            $table->decimal('processed_material_quantity', 10, 0);
+            $table->uuid('product_id')->nullable();
+            $table->uuid('material_id')->nullable();
+            $table->uuid('processed_material_id')->nullable();
+            $table->decimal('count', 3, 0)->nullable();
+            $table->string('status', 20)->nullable();
+            $table->time('time')->nullable();
+            $table->decimal('material_quantity', 10, 0)->nullable();
+            $table->decimal('processed_material_quantity', 10, 0)->nullable();
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');

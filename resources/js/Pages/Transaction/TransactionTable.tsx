@@ -31,6 +31,7 @@ import { router } from "@inertiajs/react";
 
 type Production = {
   id: string;
+  transaction_id: string;
   count: number;
   status: string;
   time: string;
@@ -47,6 +48,7 @@ type Product = {
 
 type TransactionDetail = {
   id: string;
+  transaction_id: string;
   quantity: number;
   price: number;
   is_review: boolean;

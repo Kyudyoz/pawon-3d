@@ -21,6 +21,7 @@ import {
 
 type Production = {
   id: string;
+  transaction_id: string;
   count: number;
   status: string;
   time: string;
@@ -37,6 +38,7 @@ type Product = {
 
 type TransactionDetail = {
   id: string;
+  transaction_id: string;
   quantity: number;
   price: number;
   is_review: boolean;
@@ -243,10 +245,11 @@ const Index = () => {
                             </td>
                             {showData.type === "pesanan" && (
                               <td className="px-6 py-4 text-xs whitespace-nowrap">
-                                {detail.product.productions &&
-                                detail.product.productions.length > 0
-                                  ? detail.product.productions[0].status || "-"
-                                  : "-"}
+                                {detail.product.productions.map(
+                                  (prod) =>
+                                    prod.transaction_id ==
+                                      detail.transaction_id && prod.status
+                                )}
                               </td>
                             )}
                           </tr>

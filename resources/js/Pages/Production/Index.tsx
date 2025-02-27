@@ -39,7 +39,7 @@ type Production = {
   id: string;
   // Tambahkan field koneksi produksi dengan transaksi (misalnya)
   transaction_id?: string;
-  detail_id?: string;
+  transaction_detail_id?: string;
   product: Product;
   count: number;
   status: string;
@@ -103,7 +103,8 @@ function Index() {
     clearErrors,
   } = useForm({
     transaction_id: "",
-    detail_id: "",
+    transaction_detail_id: "",
+    product_id: "",
     count: 0,
     status: "",
     time: "",
@@ -176,7 +177,8 @@ function Index() {
     setEditData(production);
     setData({
       transaction_id: production.transaction_id || "",
-      detail_id: production.detail_id || "",
+      transaction_detail_id: production.transaction_detail_id || "",
+      product_id: production.product.id || "",
       count: production.count,
       status: production.status,
       time: production.time,
@@ -278,8 +280,10 @@ function Index() {
                 <Label htmlFor="detail_id">Pilih Detail Transaksi</Label>
                 <select
                   id="detail_id"
-                  value={data.detail_id}
-                  onChange={(e) => setData("detail_id", e.target.value)}
+                  value={data.transaction_detail_id}
+                  onChange={(e) =>
+                    setData("transaction_detail_id", e.target.value)
+                  }
                   className="w-full border rounded px-3 py-2"
                 >
                   <option value="">Pilih Detail</option>
@@ -297,8 +301,10 @@ function Index() {
                     return null;
                   })()}
                 </select>
-                {errors.detail_id && (
-                  <p className="text-red-500 text-sm">{errors.detail_id}</p>
+                {errors.transaction_detail_id && (
+                  <p className="text-red-500 text-sm">
+                    {errors.transaction_detail_id}
+                  </p>
                 )}
               </div>
             )}
@@ -447,8 +453,10 @@ function Index() {
                 <Label htmlFor="detail_id_edit">Pilih Detail Transaksi</Label>
                 <select
                   id="detail_id_edit"
-                  value={data.detail_id}
-                  onChange={(e) => setData("detail_id", e.target.value)}
+                  value={data.transaction_detail_id}
+                  onChange={(e) =>
+                    setData("transaction_detail_id", e.target.value)
+                  }
                   className="w-full border rounded px-3 py-2"
                 >
                   <option value="">Pilih Detail</option>
@@ -466,8 +474,10 @@ function Index() {
                     return null;
                   })()}
                 </select>
-                {errors.detail_id && (
-                  <p className="text-red-500 text-sm">{errors.detail_id}</p>
+                {errors.transaction_detail_id && (
+                  <p className="text-red-500 text-sm">
+                    {errors.transaction_detail_id}
+                  </p>
                 )}
               </div>
             )}

@@ -434,11 +434,16 @@ function Index() {
               >
                 <option value="">Pilih Transaksi</option>
                 {transactions
-                  .filter((t) => t.type === "pesanan")
+                  .filter(
+                    (t) =>
+                      t.type === "pesanan" &&
+                      format(t.schedule, "yyyy-MM-dd") ===
+                        format(new Date(), "yyyy-MM-dd")
+                  )
                   .map((transaction) => (
                     <option key={transaction.id} value={transaction.id}>
-                      {transaction.id} - {transaction.type} - Rp{" "}
-                      {transaction.total_amount}
+                      {format(transaction.schedule, "dd-MM-yyyy")} -{" "}
+                      {transaction.details.length} produk
                     </option>
                   ))}
               </select>

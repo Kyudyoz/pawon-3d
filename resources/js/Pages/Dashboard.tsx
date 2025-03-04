@@ -28,7 +28,7 @@ export default function Dashboard() {
       <div className="flex items-end justify-between mb-7">
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <div className="flex gap-2 items-center">
-          <DatePicker />
+          <DatePicker onSelect={(value) => {}} value={new Date()} />
           <Button variant="secondary">
             <Filter className="w-4 h-4 mr-1" /> Filter
           </Button>
